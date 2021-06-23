@@ -1,50 +1,138 @@
 version: 2.1
-jobs:
-  build:
+
+executors:
+  node10:
     docker:
-      - image: 'circleci/node:14.17.0'
+      - image: circleci/node:10
+    working_directory: ~/project
+
+commands:
+  build:
+    description: "Builds the project"
     steps:
       - checkout
-      - run: 
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "package.json" }}
+            - v1-npm-deps-
+      - run:
+          name: Install Dependencies
           command: npm install
       - save_cache:
-          key: 'v1-dependencies-{{ checksum "package.json" }}'
+          key: v1-npm-deps-{{ checksum "package.json" }}
           paths:
-            - node_modules
+            - ./node_modules
       - run:
-          name: React Build
+          name: Build for current environment.
           command: npm run build
-  test:
-    docker:
-      - image: 'circleci/node:14.17.0'
-    steps:
-      - checkout
-      - run:
-          name: React Test
-          command: npm install 
-                   npm run test
   deploy:
-    docker:
-      - image: 'circleci/node:14.17.0'
-    steps: 
-      - checkout
+    description: "Deploy project to the designated environment"
+    parameters:
+      env:
+        type: string
+        default: "test"
+    steps:
       - run:
-          name: React Deploy
-          comand: npm install
-                  command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting:test-react-dev.web.app
+          name: Firebase Deploy
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --only hosting:<< parameters.env >>
+
+jobs:
+  build-deploy-test:
+    executor: node10
+    steps:
+      - build
+      - deploy:
+          env: "test"
+  build-deploy-staging:
+    executor: node10
+    steps:
+      - build
+      - deploy:
+          env: "staging"
+  build-deploy-production:
+    executor: node10
+    steps:
+      - build
+      - deploy:
+          env: "production"
+
 workflows:
-  version: 2.1
-  react-build:
+  version: 2
+  test:
     jobs:
-      - build:
+      - build-deploy-test:
           filters:
             branches:
               only: dev
-      - test:
-          requires:
-            - build
+  staging:
+    jobs:
+      - build-deploy-staging:
           filters:
             branches:
-              only: dev
+              only: /release\/.*/
+  production:
+    jobs:
+      - build-deploy-production:
+          filters:
+            branches:
+              only: main
+
+
+
+
+
+# version: 2.1
+# jobs:
+#   build:
+#     docker:
+#       - image: 'circleci/node:14.17.0'
+#     steps:
+#       - checkout
+#       - run: 
+#           command: npm install
+#       - save_cache:
+#           key: 'v1-dependencies-{{ checksum "package.json" }}'
+#           paths:
+#             - node_modules
+#       - run:
+#           name: React Build
+#           command: npm run build
+#   test:
+#     docker:
+#       - image: 'circleci/node:14.17.0'
+#     steps:
+#       - checkout
+#       - run:
+#           name: React Test
+#           command: npm install 
+#                    npm run test
+#   deploy:
+#     docker:
+#       - image: 'circleci/node:14.17.0'
+#     description: "Deploy project to the designated environment"
+#     parameters:
+#       env:
+#         type: string
+#         default: "test"
+#     steps: 
+#       - checkout
+#       - run:
+#           name: React Deploy
+#           comand: npm install
+#                   command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --non-interactive --only hosting:<< parameters.env >>
+# workflows:
+#   version: 2.1
+#   react-build:
+#     jobs:
+#       - build:
+#           filters:
+#             branches:
+#               only: dev
+#       - test:
+#           requires:
+#             - build
+#           filters:
+#             branches:
+#               only: dev
       
       
