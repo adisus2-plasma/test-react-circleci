@@ -11,5 +11,14 @@ jobs:
           key: 'v1-dependencies-{{ checksum "package.json" }}'
           paths:
             - node_modules
+      - run:
+          name: React Build
+          command: npm run build
+  test:
+    steps:
+      - checkout
+      - run:
+          name: React Test
+          command: npm run test
       
       
