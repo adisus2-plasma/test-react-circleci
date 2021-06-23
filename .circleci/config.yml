@@ -23,6 +23,15 @@ jobs:
           name: React Test
           command: npm install 
                    npm run test
+  deploy:
+    docker:
+      - image: 'circleci/node:14.17.0'
+    steps: 
+      - checkout
+      - run:
+          name: React Deploy
+          comand: npm install
+                  command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting:test-react-dev.web.app
 workflows:
   version: 2.1
   react-build:
