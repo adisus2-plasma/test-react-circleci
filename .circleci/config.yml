@@ -24,7 +24,7 @@ jobs:
           command: npm run test
 workflows:
   version: 2.1
-  build-test-react:
+  react-build:
     jobs:
       - build:
           filters:
