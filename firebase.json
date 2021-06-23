@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target": "test",
-      "public": "public",
+      "public": "build",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
