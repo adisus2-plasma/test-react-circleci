@@ -20,5 +20,17 @@ jobs:
       - run:
           name: React Test
           command: npm run test
+workflows:
+  version: 2.1
+  build-test:
+    jobs:
+      - build:
+          filter:
+            branches:
+              only: dev
+      - test:
+          filter:
+            branches:
+              only: dev
       
       
