@@ -21,7 +21,8 @@ jobs:
       - checkout
       - run:
           name: React Test
-          command: npm run test
+          command: npm install \
+                   npm run test
 workflows:
   version: 2.1
   react-build:
@@ -31,6 +32,8 @@ workflows:
             branches:
               only: dev
       - test:
+          requires:
+            - build
           filters:
             branches:
               only: dev
