@@ -5,19 +5,54 @@ jobs:
       - image: 'circleci/node:14.17.0'
     steps:
       - checkout
-      - restore_cache:
-          key: 'v1-dependencies-{{ checksum "package.json" }}'
-      - run: npm install
-      - save_cache:
-          key: 'v1-dependencies-{{ checksum "package.json" }}'
-          paths:
-            - node_modules
-      - run: npm run build
+      - run:
+          name: Firebase Build
+          command: 
+              npm run build
+              echo "build complete"
+  test:
+    steps:
       - checkout
       - run: 
-          name: Test
-          command: npm run test
+          name: Firebase Test
+          command:
+            npm run test
+            echo "test complete"
+  deploy:
+    steps:
       - checkout
       - run:
           name: Firebase Deploy
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
+          command: 
+            /node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting:test-react-dev
+            echo "deploy complete"
+workflows:
+  build:
+    jobs:
+      - build
+      - test
+      - deploy:
+        require:
+          - build
+          - test
+        filters:
+          branches:
+            only:
+              - dev
+      # - checkout
+      # - restore_cache:
+      #     key: 'v1-dependencies-{{ checksum "package.json" }}'
+      # - run: npm install
+      # - save_cache:
+      #     key: 'v1-dependencies-{{ checksum "package.json" }}'
+      #     paths:
+      #       - node_modules
+      # - run: npm run build
+      # - checkout
+      # - run: 
+      #     name: Test
+      #     command: npm run test
+      # - checkout
+      # - run:
+      #     name: Firebase Deploy
+      #     command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
