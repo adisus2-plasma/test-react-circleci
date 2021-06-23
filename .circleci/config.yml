@@ -7,31 +7,27 @@ jobs:
       - checkout
       - run:
           name: Firebase Build
-          command: 
-              npm run build
-              echo "build complete"
+          command: npm run build echo "build complete"
   test:
     steps:
       - checkout
-      - run: 
+      - run:
           name: Firebase Test
-          command:
-            npm run test
-            echo "test complete"
+          command: npm run test echo "test complete"
   deploy:
     steps:
       - checkout
       - run:
           name: Firebase Deploy
-          command: 
-            /node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting:test-react-dev
-            echo "deploy complete"
+          command: >-
+            /node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only
+            hosting:test-react-dev echo "deploy complete"
 workflows:
   build:
     jobs:
       - build
       - test
-      - deploy:
+      - deploy: null
         require:
           - build
           - test
@@ -39,20 +35,3 @@ workflows:
           branches:
             only:
               - dev
-      # - checkout
-      # - restore_cache:
-      #     key: 'v1-dependencies-{{ checksum "package.json" }}'
-      # - run: npm install
-      # - save_cache:
-      #     key: 'v1-dependencies-{{ checksum "package.json" }}'
-      #     paths:
-      #       - node_modules
-      # - run: npm run build
-      # - checkout
-      # - run: 
-      #     name: Test
-      #     command: npm run test
-      # - checkout
-      # - run:
-      #     name: Firebase Deploy
-      #     command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
