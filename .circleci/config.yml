@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  build-test:
     docker:
       - image: 'circleci/node:14.17.0'
     steps:
@@ -14,21 +14,14 @@ jobs:
       - run:
           name: React Build
           command: npm run build
-  test:
-    steps:
-      - checkout
       - run:
           name: React Test
           command: npm run test
 workflows:
   version: 2.1
-  build-test:
+  build-test-react:
     jobs:
-      - build:
-          filter:
-            branches:
-              only: dev
-      - test:
+      - build-test:
           filter:
             branches:
               only: dev
