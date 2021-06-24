@@ -1,9 +1,9 @@
 version: 2.1
 
 executors:
-  node10:
+  node14:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node14
     working_directory: ~/project
 
 commands:
