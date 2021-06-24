@@ -35,7 +35,7 @@ commands:
     parameters:
       env:
         type: string
-        default: "test"
+        default: "production"
     steps:
       - checkout
       - run:
