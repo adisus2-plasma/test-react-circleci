@@ -69,7 +69,7 @@ workflows:
       - build-deploy-staging:
           filters:
             branches:
-              only: /release\/.*/
+              only: stag
   production:
     jobs:
       - build-deploy-production:
