@@ -25,6 +25,12 @@ commands:
       - run:
           name: Build for current environment.
           command: npm run build
+  test:
+    description: "Test Project"
+    steps:
+      - run:
+          name: Test proj
+          command: npm run test
   deploy:
     description: "Deploy project to the designated environment"
     parameters:
@@ -69,7 +75,7 @@ workflows:
       - build-deploy-staging:
           filters:
             branches:
-              only: /release\/.*/
+              only: stag
   production:
     jobs:
       - build-deploy-production:
