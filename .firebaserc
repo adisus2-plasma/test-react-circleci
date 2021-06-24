@@ -12,7 +12,6 @@
           "test-react-stag"
         ],
         "production": [
-          "test-react",
           "test-react-3cacb"
         ]
       }
