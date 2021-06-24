@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node14:
     docker:
-      - image: circleci/node14
+      - image: cimg/node:14.17.0
     working_directory: ~/project
 
 commands:
