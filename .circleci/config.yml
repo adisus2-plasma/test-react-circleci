@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node10:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:14
     working_directory: ~/project
 
 commands:
@@ -44,19 +44,19 @@ commands:
 
 jobs:
   build-deploy-test:
-    executor: node10
+    executor: node14
     steps:
       - build
       - deploy:
           env: "test"
   build-deploy-staging:
-    executor: node10
+    executor: node14
     steps:
       - build
       - deploy:
           env: "staging"
   build-deploy-production:
-    executor: node10
+    executor: node14
     steps:
       - build
       - deploy:
