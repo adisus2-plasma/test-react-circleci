@@ -1,5 +1,20 @@
 {
   "projects": {
     "default": "test-react-3cacb"
+  },
+  "targets": {
+    "test-react-3cacb": {
+      "hosting": {
+        "test": [
+          "test-react-test"
+        ],
+        "staging": [
+          "test-react-stag"
+        ],
+        "production": [
+          "test-react"
+        ]
+      }
+    }
   }
 }
