@@ -46,8 +46,9 @@ jobs:
   build-deploy-test:
     executor: node14
     steps:
-      - build
       - deploy:
+          require:
+            - build
           env: "test"
   build-deploy-staging:
     executor: node14
