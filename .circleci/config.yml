@@ -1,9 +1,9 @@
 version: 2.1
 
 executors:
-  node14:
+  node10:
     docker:
-      - image: cimg/node:14.17.0
+      - image: circleci/node:10
     working_directory: ~/project
 
 commands:
@@ -26,11 +26,10 @@ commands:
           name: Build for current environment.
           command: npm run build
   test:
-    description: "Test Project"
+    description: "Test project"
     steps:
-      - run:
-          name: Test proj
-          command: npm run test
+      - checkout
+      - run: npm run test
   deploy:
     description: "Deploy project to the designated environment"
     parameters:
@@ -38,28 +37,31 @@ commands:
         type: string
         default: "test"
     steps:
+      - checkout
       - run:
           name: Firebase Deploy
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --only hosting:<< parameters.env >>
 
 jobs:
   build-deploy-test:
-    executor: node14
-    steps:
-      - deploy:
-          require:
-            - build
-          env: "test"
-  build-deploy-staging:
-    executor: node14
+    executor: node10
     steps:
       - build
+      - test
+      - deploy:
+          env: "test"
+  build-deploy-staging:
+    executor: node10
+    steps:
+      - build
+      - test
       - deploy:
           env: "staging"
   build-deploy-production:
-    executor: node14
+    executor: node10
     steps:
       - build
+      - test
       - deploy:
           env: "production"
 
@@ -83,3 +85,4 @@ workflows:
           filters:
             branches:
               only: main
+      
