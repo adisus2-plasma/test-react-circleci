@@ -35,7 +35,7 @@ commands:
     parameters:
       env:
         type: string
-        default: "test"
+        default: "dev"
     steps:
       - checkout
       - run:
@@ -49,7 +49,7 @@ jobs:
       - build
       - test
       - deploy:
-          env: "test"
+          env: "dev"
   build-deploy-staging:
     executor: node10
     steps:
@@ -85,4 +85,3 @@ workflows:
           filters:
             branches:
               only: main
-      
