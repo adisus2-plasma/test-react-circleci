@@ -26,10 +26,10 @@ commands:
           name: Build for current environment.
           command: npm run build 
   env-test:
-      description: "test .env variable"
-      steps:
-        - checkout
-        - run:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
           name: "What a number in this .env"
           command: echo ${TEST_TEST}
   test:
