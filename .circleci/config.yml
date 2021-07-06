@@ -24,8 +24,14 @@ commands:
             - ./node_modules
       - run:
           name: Build for current environment.
-          command: npm run build \
-                   echo "Hello Build"
+          command: npm run build 
+  env-test:
+      description: "test .env variable"
+      steps:
+        - checkout
+        - run:
+          name: "What a number in this .env"
+          command: echo ${TEST_TEST}
   test:
     description: "Test project"
     steps:
@@ -48,6 +54,7 @@ jobs:
     executor: node14
     steps:
       - build
+      - env-test
       - test
       - deploy:
           env: "dev"
