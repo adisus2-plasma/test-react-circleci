@@ -17,6 +17,7 @@ commands:
   build:
     description: "Builds the project"
     steps:
+      - checkout
       - restore_cache:
           keys:
             - v1-npm-deps-{{ checksum "package.json" }}
