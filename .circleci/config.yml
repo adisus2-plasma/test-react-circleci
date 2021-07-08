@@ -13,7 +13,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_PROD=$TEST_PROD" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION=$TEST_PROD" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
@@ -23,7 +23,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_STAG=$TEST_STAG" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION=$TEST_STAG" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
@@ -33,7 +33,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION=$TEST_DEV" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
