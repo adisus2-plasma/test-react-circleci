@@ -5,7 +5,7 @@
   "targets": {
     "test-react-3cacb": {
       "hosting": {
-        "test": [
+        "dev": [
           "test-react-test"
         ],
         "staging": [

@@ -1,12 +1,42 @@
 version: 2.1
 
 executors:
-  node10:
+  node14:
     docker:
-      - image: circleci/node:10
+      - image: cimg/node:14.17.0
     working_directory: ~/project
 
 commands:
+  env-prod:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
+          name: "What a number in this .env"
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_PROD=$TEST_PROD" >> .env
+      - run:
+          name: "Check file .env"
+          command: ls -la ; cat .env
+  env-stag:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
+          name: "What a number in this .env"
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_STAG=$TEST_STAG" >> .env
+      - run:
+          name: "Check file .env"
+          command: ls -la ; cat .env
+  env-dev:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
+          name: "What a number in this .env"
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env
+      - run:
+          name: "Check file .env"
+          command: ls -la ; cat .env
   build:
     description: "Builds the project"
     steps:
@@ -16,51 +46,56 @@ commands:
             - v1-npm-deps-{{ checksum "package.json" }}
             - v1-npm-deps-
       - run:
+          name: "Check file .env again"
+          command: ls -la ; cat .env
+      - run:
           name: Install Dependencies
           command: npm install
       - save_cache:
           key: v1-npm-deps-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+            
       - run:
           name: Build for current environment.
-          command: npm run build \
-                   ${TEST_STAG}
+          command: npm run build 
   test:
     description: "Test project"
     steps:
-      - checkout
       - run: npm run test
   deploy:
     description: "Deploy project to the designated environment"
     parameters:
       env:
         type: string
-        default: "test"
+        default: "dev"
     steps:
       - checkout
       - run:
           name: Firebase Deploy
-          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --only hosting:<< parameters.env >>
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --only hosting:<< parameters.env >> 
 
 jobs:
-  build-deploy-test:
-    executor: node10
+  build-deploy-dev:
+    executor: node14
     steps:
+      - env-dev
       - build
       - test
       - deploy:
-          env: "test"
+          env: "dev"
   build-deploy-staging:
-    executor: node10
+    executor: node14
     steps:
+      - env-stag
       - build
       - test
       - deploy:
           env: "staging"
   build-deploy-production:
-    executor: node10
+    executor: node14
     steps:
+      - env-prod
       - build
       - test
       - deploy:
@@ -68,9 +103,9 @@ jobs:
 
 workflows:
   version: 2
-  test:
+  dev:
     jobs:
-      - build-deploy-test:
+      - build-deploy-dev:
           filters:
             branches:
               only: dev
@@ -86,4 +121,3 @@ workflows:
           filters:
             branches:
               only: main
-      
