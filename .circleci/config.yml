@@ -7,10 +7,16 @@ executors:
     working_directory: ~/project
 
 commands:
+  env-dev:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
+          name: "What a number in this .env"
+          command: touch .env ; echo "DB_CONNECTION=$TEST_DEV >> .env"
   build:
     description: "Builds the project"
     steps:
-      - checkout
       - restore_cache:
           keys:
             - v1-npm-deps-{{ checksum "package.json" }}
@@ -22,20 +28,13 @@ commands:
           key: v1-npm-deps-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+            
       - run:
           name: Build for current environment.
           command: npm run build 
-  env-dev:
-    description: "test .env variable"
-    steps:
-      - checkout
-      - run:
-          name: "What a number in this .env"
-          command: touch .env ; echo "DB_CONNECTION=$TEST_DEV >> .env"
   test:
     description: "Test project"
     steps:
-      - checkout
       - run: npm run test
   deploy:
     description: "Deploy project to the designated environment"
@@ -47,7 +46,7 @@ commands:
       - checkout
       - run:
           name: Firebase Deploy
-          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --only hosting:<< parameters.env >>
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --only hosting:<< parameters.env >> 
 
 jobs:
   build-deploy-dev:
