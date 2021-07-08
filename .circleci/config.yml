@@ -7,13 +7,33 @@ executors:
     working_directory: ~/project
 
 commands:
+  env-prod:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
+          name: "What a number in this .env"
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_PROD=$TEST_PROD" >> .env
+      - run:
+          name: "Check file .env"
+          command: ls -la ; cat .env
+  env-stag:
+    description: "test .env variable"
+    steps:
+      - checkout
+      - run:
+          name: "What a number in this .env"
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_STAG=$TEST_STAG" >> .env
+      - run:
+          name: "Check file .env"
+          command: ls -la ; cat .env
   env-dev:
     description: "test .env variable"
     steps:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION=$TEST_DEV" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
@@ -67,6 +87,7 @@ jobs:
   build-deploy-staging:
     executor: node14
     steps:
+      - env-stag
       - build
       - test
       - deploy:
@@ -74,6 +95,7 @@ jobs:
   build-deploy-production:
     executor: node14
     steps:
+      - env-prod
       - build
       - test
       - deploy:
