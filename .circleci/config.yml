@@ -14,6 +14,9 @@ commands:
       - run:
           name: "What a number in this .env"
           command: touch .env ; echo "DB_CONNECTION=$TEST_DEV >> .env"
+      - run:
+          name: "Check file .env"
+          command: ls -la
   build:
     description: "Builds the project"
     steps:
@@ -22,6 +25,9 @@ commands:
           keys:
             - v1-npm-deps-{{ checksum "package.json" }}
             - v1-npm-deps-
+      - run:
+          name: "Check file .env again"
+          command: ls -la
       - run:
           name: Install Dependencies
           command: npm install
