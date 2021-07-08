@@ -25,13 +25,13 @@ commands:
       - run:
           name: Build for current environment.
           command: npm run build 
-  env-test:
+  env-dev:
     description: "test .env variable"
     steps:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: echo ${TEST_TEST}
+          command: touch .env ; echo "DB_CONNECTION=$TEST_DEV >> .env"
   test:
     description: "Test project"
     steps:
@@ -54,7 +54,7 @@ jobs:
     executor: node14
     steps:
       - build
-      - env-test
+      - env-dev
       - test
       - deploy:
           env: "dev"
