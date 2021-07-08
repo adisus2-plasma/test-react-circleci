@@ -24,7 +24,8 @@ commands:
             - ./node_modules
       - run:
           name: Build for current environment.
-          command: npm run build
+          command: npm run build \
+                   echo ${TEST_STAG}
   test:
     description: "Test project"
     steps:
