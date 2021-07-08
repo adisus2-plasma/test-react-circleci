@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload. Hello shit .env ${process.env.REACT_APP_DB_CONNECTION_STAG}
+          Edit <code>src/App.js</code> and save to reload. Hello shit .env ${process.env.REACT_APP_DB_CONNECTION}
         </p>
         <a
           className="App-link"
