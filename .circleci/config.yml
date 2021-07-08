@@ -53,8 +53,8 @@ jobs:
   build-deploy-dev:
     executor: node14
     steps:
-      - build
       - env-dev
+      - build
       - test
       - deploy:
           env: "dev"
