@@ -35,7 +35,7 @@ commands:
           name: "What a number in this .env"
           command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env
       - run:
-          command: echo "AWS_BUCKET_NAME_VONDERME=$AWS_BUCKET_NAME" >> .env
+          command: echo "REACT_APP_AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env
       - run:
           name: "Check file .env"
           command: cat .env

@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload. Hello shit .env {process.env.AWS_BUCKET_NAME_VONDERME}
+          Edit <code>src/App.js</code> and save to reload. Hello shit .env {process.env.REACT_APP_AWS_BUCKET_NAME}
         </p>
         <a
           className="App-link"
