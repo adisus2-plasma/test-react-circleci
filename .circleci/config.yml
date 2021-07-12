@@ -33,7 +33,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env ; echo "AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env ; echo "AWS_BUCKET_NAME=$AWS_BUCKET_NAME_VONDERME" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
