@@ -26,14 +26,16 @@ commands:
           command: touch .env ; echo "REACT_APP_DB_CONNECTION_STAG=$TEST_STAG" >> .env
       - run:
           name: "Check file .env"
-          command: ls -la ; cat .env
+          command: cat .env
   env-dev:
     description: "test .env variable"
     steps:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env ; echo "AWS_BUCKET_NAME=$AWS_BUCKET_NAME_VONDERME" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env
+      - run:
+          command: echo "AWS_BUCKET_NAME=$AWS_BUCKET_NAME_VONDERME" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
