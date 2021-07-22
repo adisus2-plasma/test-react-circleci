@@ -55,7 +55,10 @@ commands:
           key: v1-npm-deps-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-            
+      
+      - run:
+          name: check firebase
+          command: ls -l ./node_modules/.bin/
       - run:
           name: Build for current environment.
           command: npm run build 
