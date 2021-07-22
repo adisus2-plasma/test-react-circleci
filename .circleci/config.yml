@@ -13,7 +13,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_PROD=$TEST_PROD" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_PROD=$TEST_PROD" >> .env ; echo "REACT_APP_AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env
       - run:
           name: "Check file .env"
           command: ls -la ; cat .env
@@ -23,7 +23,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_STAG=$TEST_STAG" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_STAG=$TEST_STAG" >> .env ; echo "REACT_APP_AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env
       - run:
           name: "Check file .env"
           command: cat .env
@@ -33,9 +33,7 @@ commands:
       - checkout
       - run:
           name: "What a number in this .env"
-          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env
-      - run:
-          command: echo "REACT_APP_AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env
+          command: touch .env ; echo "REACT_APP_DB_CONNECTION_DEV=$TEST_DEV" >> .env ; echo "REACT_APP_AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env ; echo "REACT_APP_AWS_ACCESS_KEY=$AWS_ACCESS_KEY" >> .env ; echo "REACT_APP_AWS_BUCKET_REGION=$AWS_BUCKET_REGION" >> .env ; echo "REACT_APP_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY" >> .env
       - run:
           name: "Check file .env"
           command: cat .env
